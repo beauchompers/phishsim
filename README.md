@@ -2,6 +2,8 @@
 
 A self-hosted tool for injecting realistic phishing simulation emails into Microsoft 365 mailboxes via the Microsoft Graph API. Built for security awareness training — test your users' ability to identify and report phishing emails.
 
+![PhishSim Injector UI](screenshots/phishsim%20screenshot.png)
+
 ## Features
 
 - **5 built-in scenarios** — Credential harvester, BEC, malware attachment, URL phishing, and a legitimate email (false positive test)
