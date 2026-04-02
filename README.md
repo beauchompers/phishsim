@@ -87,6 +87,17 @@ templates/
 - **Credentials stay server-side** — Azure secrets are never sent to the browser
 - **Run behind a reverse proxy with TLS** if exposing beyond localhost
 
+## Phishing Report Workflow
+
+PhishSim pairs with Outlook's built-in "Report Phishing" button. The full loop:
+
+1. **PhishSim injects** simulation emails into user inboxes
+2. **Users identify** the phishing email and click **Report → Report Phishing** in Outlook
+3. **The report lands** in a shared mailbox you control (e.g., `phishing@yourdomain.onmicrosoft.com`)
+4. **Your SIEM/SOAR** (or manual review) picks up the report and runs triage
+
+To complete this setup, you need a shared mailbox configured as a SecOps mailbox (so Defender doesn't strip malicious content) with Outlook's user reporting pointed at it. See [SETUP.md — Step 4](SETUP.md#step-4-configure-user-reported-phishing-to-a-shared-mailbox) for full instructions.
+
 ## Full Setup Guide
 
 See [SETUP.md](SETUP.md) for detailed instructions including Entra ID app registration, shared mailbox configuration for phishing reports, and threat intelligence indicators.

@@ -135,35 +135,56 @@ The UI is a single-page split view:
 
 ---
 
-## Step 4: Configure the Report-Phish Shared Mailbox (Optional)
+## Step 4: Configure User-Reported Phishing to a Shared Mailbox
 
-If you want to test the full phishing report workflow, set up a shared mailbox to receive reported emails.
+This is the other half of the simulation: when users click "Report Phishing" in Outlook, where does that report go? By setting up a shared mailbox, you control the destination and can monitor whether users correctly identified and reported the simulation emails.
 
-### Create the Shared Mailbox
+This is also how you'd integrate with a SIEM/SOAR — your automation monitors the shared mailbox for incoming reported emails and triggers triage workflows.
+
+### 4a. Create the Shared Mailbox
 
 ```powershell
+# Install the Exchange Online module if you haven't already
+# Install-Module ExchangeOnlineManagement
+
 Connect-ExchangeOnline -UserPrincipalName admin@yourdomain.onmicrosoft.com
 
+# Create the shared mailbox
 New-Mailbox -Shared -Name "Phishing Triage" -Alias "phishing" `
   -PrimarySmtpAddress phishing@yourdomain.onmicrosoft.com
 
+# Grant yourself access so you can monitor it
 Add-MailboxPermission -Identity "phishing@yourdomain.onmicrosoft.com" `
   -User "admin@yourdomain.onmicrosoft.com" -AccessRights FullAccess
 ```
 
-### Configure as SecOps Mailbox
+### 4b. Mark as SecOps Mailbox
+
+This step is important — without it, Microsoft Defender will strip malicious content (links, headers, attachments) from reported emails before they land in the shared mailbox. Marking it as a SecOps mailbox preserves the original email intact for analysis.
 
 1. Go to **security.microsoft.com → Settings → Email & Collaboration → Advanced Delivery**
-2. Under **SecOps Mailbox**, add `phishing@yourdomain.onmicrosoft.com`
-3. This prevents Exchange from stripping malicious content before analysis
+2. Click the **SecOps Mailbox** tab
+3. Add `phishing@yourdomain.onmicrosoft.com`
+4. Click **Save**
 
-### Route Reports to the Shared Mailbox
+### 4c. Route User Reports to the Shared Mailbox
+
+Configure Outlook's built-in "Report" button to send reported emails to your shared mailbox instead of (or in addition to) Microsoft:
 
 1. Go to **security.microsoft.com → Settings → Email & Collaboration → User reported settings**
 2. Toggle **"Monitor reported messages in Outlook"** to On
 3. Select **"Use the built-in Report button in Outlook"**
-4. Under destinations, select **"My reporting mailbox only"**
+4. Under **"Reported message destinations"**, select **"My reporting mailbox only"**
 5. Enter `phishing@yourdomain.onmicrosoft.com`
+6. Click **Save**
+
+### 4d. Verify the Flow
+
+1. Inject a simulation email using PhishSim
+2. Open the target user's mailbox in Outlook (web or desktop)
+3. Select the simulation email and click **Report → Report Phishing**
+4. Check the shared mailbox — the reported email should appear as an attachment (`.eml`) within a report message
+5. The original email headers, body, and indicators are preserved for analysis
 
 ---
 
