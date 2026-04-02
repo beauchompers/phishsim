@@ -17,7 +17,7 @@ A self-hosted tool for injecting realistic phishing simulation emails into Micro
 ## Quick Start
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/beauchompers/phishsim.git
 cd phishsim-app
 cp .env.example .env
 # Edit .env with your Azure credentials
