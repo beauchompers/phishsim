@@ -1,0 +1,14 @@
+services:
+  phishsim:
+    build: .
+    container_name: phishsim-injector
+    ports:
+      - "5001:5000"
+    env_file:
+      - .env
+    volumes:
+      - phishsim-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  phishsim-data:

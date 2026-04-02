@@ -1,0 +1,87 @@
+[
+  {
+    "id": "1",
+    "name": "Credential Harvester",
+    "verdict": "MALICIOUS",
+    "difficulty": "OBVIOUS",
+    "subject": "Urgent: Your Microsoft 365 Password Expires in 24 Hours",
+    "from_name": "Microsoft 365 Admin",
+    "from_address": "security-alerts@{{attacker_domain}}",
+    "reply_to": "phish-reply@protonmail.com",
+    "headers": [
+      {"name": "X-Authentication-Results", "value": "mx.{{company_name_lower}}.com; spf=fail smtp.mailfrom={{attacker_domain}}; dkim=none; dmarc=fail action=quarantine"},
+      {"name": "X-MS-Exchange-Organization-SCL", "value": "9"},
+      {"name": "X-PhishSim-Scenario", "value": "1-{{run_id}}"},
+      {"name": "X-PhishSim-RunID", "value": "{{run_id}}"}
+    ],
+    "template": "scenario-1.html"
+  },
+  {
+    "id": "2",
+    "name": "Business Email Compromise",
+    "verdict": "SUSPICIOUS",
+    "difficulty": "SUBTLE",
+    "subject": "Quick favor - Urgent",
+    "from_name": "{{ceo_name}}",
+    "from_address": "ceo@{{bec_domain}}",
+    "reply_to": "m.chen.personal.247@gmail.com",
+    "headers": [
+      {"name": "X-Authentication-Results", "value": "mx.{{company_name_lower}}.com; spf=pass smtp.mailfrom={{bec_domain}}; dkim=pass header.d={{bec_domain}}; dmarc=pass"},
+      {"name": "X-PhishSim-Scenario", "value": "2-{{run_id}}"},
+      {"name": "X-PhishSim-RunID", "value": "{{run_id}}"}
+    ],
+    "template": "scenario-2.html"
+  },
+  {
+    "id": "3",
+    "name": "Malware Attachment (Invoice)",
+    "verdict": "MALICIOUS",
+    "difficulty": "MODERATE",
+    "subject": "Invoice #INV-2026-4582 \u2014 Payment Overdue (Action Required)",
+    "from_name": "Accounts Receivable - NetGlobal Services",
+    "from_address": "billing@netglobal-svcs.com",
+    "reply_to": "billing.dept.ng@outlook.com",
+    "headers": [
+      {"name": "X-Authentication-Results", "value": "mx.google.com; spf=softfail smtp.mailfrom=netglobal-svcs.com; dkim=none; dmarc=fail"},
+      {"name": "X-MS-Exchange-Organization-SCL", "value": "7"},
+      {"name": "X-PhishSim-Scenario", "value": "3-{{run_id}}"},
+      {"name": "X-PhishSim-RunID", "value": "{{run_id}}"}
+    ],
+    "template": "scenario-3.html"
+  },
+  {
+    "id": "4",
+    "name": "URL Phishing \u2014 Security Alert",
+    "verdict": "MALICIOUS",
+    "difficulty": "MODERATE",
+    "subject": "Unusual sign-in activity detected on your account",
+    "from_name": "Microsoft Account Security",
+    "from_address": "no-reply@{{attacker_domain}}",
+    "reply_to": "no-reply@{{attacker_domain}}",
+    "headers": [
+      {"name": "X-Originating-IP", "value": "[103.75.201.2]"},
+      {"name": "X-Authentication-Results", "value": "mx.{{company_name_lower}}.com; spf=fail smtp.mailfrom={{attacker_domain}}; dkim=none; dmarc=fail"},
+      {"name": "X-MS-Exchange-Organization-SCL", "value": "9"},
+      {"name": "X-PhishSim-Scenario", "value": "4-{{run_id}}"},
+      {"name": "X-PhishSim-RunID", "value": "{{run_id}}"}
+    ],
+    "template": "scenario-4.html"
+  },
+  {
+    "id": "5",
+    "name": "Legitimate Email (FP Test)",
+    "verdict": "BENIGN",
+    "difficulty": "BENIGN",
+    "subject": "Team Meeting Agenda \u2014 Q2 Planning ({{date_short}})",
+    "from_name": "Sarah Johnson",
+    "from_address": null,
+    "reply_to": null,
+    "headers_template": true,
+    "headers": [
+      {"name": "X-MS-Exchange-Organization-SCL", "value": "-1"},
+      {"name": "X-PhishSim-Scenario", "value": "5-{{run_id}}"},
+      {"name": "X-PhishSim-RunID", "value": "{{run_id}}"}
+    ],
+    "template": "scenario-5.html"
+  }
+]

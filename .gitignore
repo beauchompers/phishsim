@@ -1,0 +1,10 @@
+.env
+.env.local
+__pycache__/
+*.pyc
+.DS_Store
+data/
+venv/
+.pytest_cache/
+.claude/
+docs/plans/
