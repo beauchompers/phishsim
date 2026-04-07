@@ -260,6 +260,7 @@ function App(){
                   <div style={{display:"flex",gap:4,marginTop:3}}>
                     <Badge color={VERDICT_COLORS[sc.verdict]}>{sc.verdict}</Badge>
                     <Badge color="var(--text3)">{sc.difficulty}</Badge>
+                    {sc.has_attachment&&<Badge color="#c59520">ATTACHMENT</Badge>}
                   </div>
                 </div>
               </div>

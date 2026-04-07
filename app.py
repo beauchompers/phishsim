@@ -12,6 +12,7 @@ import os
 import time
 import uuid
 import json
+import base64
 import logging
 from datetime import datetime, timezone
 from functools import wraps
@@ -255,6 +256,17 @@ def build_scenarios(cfg, run_id):
         with open(tmpl_path) as f:
             sc["body"] = _render(f.read(), variables)
 
+        # Load attachment if defined
+        if "attachment" in sc_def:
+            att = sc_def["attachment"]
+            att_path = os.path.join(TEMPLATES_DIR, att["file"])
+            with open(att_path, "rb") as f:
+                sc["attachment"] = {
+                    "name": _render(att["name"], variables),
+                    "content_type": att["content_type"],
+                    "content_bytes": base64.b64encode(f.read()).decode("ascii"),
+                }
+
         result[sc["id"]] = sc
     return result
 
@@ -288,6 +300,17 @@ def build_graph_payload(scenario, target_email):
 
     if scenario.get("reply_to"):
         payload["replyTo"] = [{"emailAddress": {"address": scenario["reply_to"]}}]
+
+    if scenario.get("attachment"):
+        att = scenario["attachment"]
+        payload["attachments"] = [
+            {
+                "@odata.type": "#microsoft.graph.fileAttachment",
+                "name": att["name"],
+                "contentType": att["content_type"],
+                "contentBytes": att["content_bytes"],
+            }
+        ]
 
     return payload
 
@@ -375,6 +398,7 @@ def list_scenarios():
             "subject": _render(sc["subject"], variables),
             "from_name": _render(sc["from_name"], variables),
             "from_address": _render(sc["from_address"], variables) if sc["from_address"] else "(internal sender)",
+            "has_attachment": "attachment" in sc,
         })
     return jsonify({"scenarios": result})
 

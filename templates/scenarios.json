@@ -47,7 +47,12 @@
       {"name": "X-PhishSim-Scenario", "value": "3-{{run_id}}"},
       {"name": "X-PhishSim-RunID", "value": "{{run_id}}"}
     ],
-    "template": "scenario-3.html"
+    "template": "scenario-3.html",
+    "attachment": {
+      "name": "Invoice-INV-2026-4582.pdf",
+      "content_type": "application/pdf",
+      "file": "attachments/invoice-INV-2026-4582.pdf"
+    }
   },
   {
     "id": "4",
